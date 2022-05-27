@@ -4,10 +4,14 @@ import static br.com.alura.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +32,21 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setTitle(TITULO_APPBAR);
         configFabNovoAluno();
         configLista();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Remover");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo =
+                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Aluno alunoSelecionado = adapter.getItem(menuInfo.position);
+        removeAluno(alunoSelecionado);
+        return super.onContextItemSelected(item);
     }
 
     private void configFabNovoAluno() {
@@ -55,15 +74,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         ListView listadeAlunos = findViewById(R.id.activity_lista_de_alunos);
         configAdapter(listadeAlunos);
         itemClick(listadeAlunos);
-        itemLongClick(listadeAlunos);
-    }
-
-    private void itemLongClick(ListView listadeAlunos) {
-        listadeAlunos.setOnItemLongClickListener((adapterView, view, posicao, id) -> {
-            Aluno alunoEscolhido = (Aluno) adapterView.getItemAtPosition(posicao);
-            removeAluno(alunoEscolhido);
-            return false;
-        });
+        registerForContextMenu(listadeAlunos);
     }
 
     private void removeAluno(Aluno aluno) {
