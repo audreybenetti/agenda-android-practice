@@ -32,15 +32,17 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     private void carregaAluno() {
-        Intent dadosAluno = getIntent();
-        if (dadosAluno.hasExtra(CHAVE_ALUNO)) preencheAlunos(dadosAluno);
-        else {
+        Intent dados = getIntent();
+        if (dados.hasExtra(CHAVE_ALUNO)) {
+            setTitle(TITULO_APPBAR_EDITA_ALUNO);
+            aluno = (Aluno) dados.getSerializableExtra(CHAVE_ALUNO);
+            preencheDados();
+        }else {
             aluno = new Aluno();
         }
     }
 
-    private void preencheAlunos(Intent dadosAluno) {
-        aluno = (Aluno) dadosAluno.getSerializableExtra(CHAVE_ALUNO);
+    private void preencheDados() {
         campoNome.setText(aluno.getNome());
         campoTelefone.setText(aluno.getTelefone());
         campoEmail.setText(aluno.getEmail());

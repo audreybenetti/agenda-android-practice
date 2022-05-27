@@ -8,7 +8,7 @@ import java.util.List;
 import br.com.alura.agenda.model.Aluno;
 
 public class AlunoDAO {
-    private static int contadorId = 0;
+    private static int contadorId = 1;
     private final static List<Aluno> alunos = new ArrayList<>();
 
     public void salva(Aluno aluno) {
@@ -38,5 +38,12 @@ public class AlunoDAO {
 
     public List<Aluno> todos(){
         return new ArrayList<>(alunos);
+    }
+
+    public void remove(Aluno aluno) {
+        if (aluno != null) {
+            Aluno alunoDevolvido = buscaAlunoId(aluno);
+            alunos.remove(alunoDevolvido);
+        }
     }
 }
